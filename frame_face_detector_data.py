@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import cv2
 from tkinter import Canvas, Button, PhotoImage, Toplevel
 from available_device_getter import get_available_device_index
@@ -143,7 +144,7 @@ class face_detector_data_frame():
 
 	def display_face_detection_feed(self):
     # Load the Haar cascade file for detecting faces
-		face_cascade = cv2.CascadeClassifier('./haarcascades/haarcascade_frontalface_alt2.xml')
+		face_cascade = cv2.CascadeClassifier(os.path.join(OUTPUT_PATH, 'haarcascades', 'haarcascade_frontalface_alt2.xml'))
 
     # Initialize the video capture object
 		device_index = get_available_device_index()
