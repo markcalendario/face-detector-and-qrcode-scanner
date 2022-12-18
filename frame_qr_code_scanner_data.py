@@ -1,20 +1,14 @@
 from pathlib import Path
-
-# from tkinter import *
-# Explicit imports to satisfy Flake8
 from tkinter import Canvas, Button, PhotoImage, Toplevel, messagebox
-import cv2
-from pyzbar import pyzbar
+import cv2, os
 from camera_device import get_available_camera
-
 from colors import colors
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r".\assets\frame2")
+ASSETS_PATH = os.path.join(OUTPUT_PATH, './assets/frame2')
 
-
-def relative_to_assets(path: str) -> Path:
-    return ASSETS_PATH / Path(path)
+def relative_to_assets(path):
+    return os.path.join(ASSETS_PATH, path)
 
 class frame_qr_code_scanner:
 	def __init__(self, root):
@@ -142,27 +136,31 @@ class frame_qr_code_scanner:
 
 			return text_size
 
-	def read_qrcodes(self, frame):
-		qrs = pyzbar.decode(frame)
+	def read_qrcodes(self, detector, frame):
 
-		for qr in qrs:
-			x, y, w, h = qr.rect
+		qr_data_text, bbox, _ = detector.detectAndDecode(frame)
+		self.canvas.itemconfig(self.result_text, text=qr_data_text if qr_data_text else "No QR Code Detected" )
+		self.canvas.update()
 
-			# QR Info
-			qr_info = qr.data.decode('utf-8')
-			cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 226, 83), 2)
-			self.canvas.itemconfig(self.result_text, text=qr_info)
-			self.canvas.update()
-			# Initialize Font
-			font = cv2.FONT_HERSHEY_COMPLEX 
+		if not qr_data_text:
+			return frame
 
-			self.draw_text(frame, qr_info, font, (x, y - 38), 1, 2, (255, 255, 255), (0, 226, 83))
+		point_1 = [int(point_1_floats) for point_1_floats in bbox[0][0]]
+		point_2 = [int(point_2_floats) for point_2_floats in bbox[0][2]]
+		
+		frame = cv2.rectangle(frame, point_1, point_2, colors.get('qr_code_scan'), 2)
+
+		# Initialize Font
+		font = cv2.FONT_HERSHEY_COMPLEX 
+
+		self.draw_text(frame, qr_data_text, font, (point_1[0], point_1[1] - 38), 1, 2, (255, 255, 255), colors.get('qr_code_scan'))
 
 		return frame
 
 	def start_qr_scan(self):
 
 		available_camera_index = get_available_camera()
+		detector = cv2.QRCodeDetector()
 
 		if available_camera_index == None:
 			messagebox.showerror("Camera is not detected", "You do not have available camera. Please make sure your camera is turned on and connected.")
@@ -171,19 +169,18 @@ class frame_qr_code_scanner:
 			return
 
 		camera = cv2.VideoCapture(available_camera_index)
-
 		is_device_capturing, frame = camera.read()
 
 		while is_device_capturing:
 			is_device_capturing, frame = camera.read()
 
-			frame = self.read_qrcodes(frame)
+			if cv2.waitKey(1) == 27:
+				break
+
+			frame = self.read_qrcodes(detector, frame)
 			
 			cv2.imshow('Real Time - QR Code Scanner', frame)
 			
-			if cv2.waitKey(1) == 27:
-					break
-
 		camera.release()
 		cv2.destroyAllWindows()
 		

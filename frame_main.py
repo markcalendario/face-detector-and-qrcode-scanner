@@ -2,13 +2,14 @@ from pathlib import Path
 from tkinter import Tk, Canvas, Button, PhotoImage
 from frame_face_detector_data import face_detector_data_frame
 from colors import colors
+import os
 from frame_qr_code_scanner_data import frame_qr_code_scanner
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r".\assets\frame0")
+ASSETS_PATH = os.path.join(OUTPUT_PATH, './assets/frame0')
 
-def relative_to_assets(path: str) -> Path:
-    return ASSETS_PATH / Path(path)
+def relative_to_assets(path):
+    return os.path.join(ASSETS_PATH, path)
 
 class main_frame():
 	def __init__(self):

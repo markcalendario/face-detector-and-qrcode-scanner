@@ -6,10 +6,10 @@ from camera_device import get_available_camera
 from colors import colors
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r".\assets\frame1")
+ASSETS_PATH = os.path.join(OUTPUT_PATH, './assets/frame1')
 
-def relative_to_assets(path: str) -> Path:
-    return ASSETS_PATH / Path(path)
+def relative_to_assets(path):
+    return os.path.join(ASSETS_PATH, path)
 
 class face_detector_data_frame():
 	def __init__(self, root):
