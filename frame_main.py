@@ -45,7 +45,7 @@ class main_frame():
 		)
 
 		canvas.create_text(
-    	25.0,
+    	70.0,
     	7.5,
 			anchor="nw",
 			text="GROUP 4",
@@ -54,13 +54,19 @@ class main_frame():
 		)
 
 		canvas.create_text(
-			25.0,
+			70.0,
     	36.0,
     	anchor="nw",
     	text="Face Detection and QR Code Recognition System",
     	fill=colors.get('white'),
     	font=("Arial", 9)
     )
+
+		logo = PhotoImage(
+			file=relative_to_assets("../logo.png")
+    )
+
+		canvas.create_image(40.0, 35.0, image = logo)
 
 		face_detector_btn_image = PhotoImage(
 			file=relative_to_assets("button_1.png")

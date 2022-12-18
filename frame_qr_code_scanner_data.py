@@ -42,7 +42,7 @@ class frame_qr_code_scanner:
 			outline="")
 
 		self.canvas.create_text(
-    	25.0,
+    	70.0,
     	7.5,
 			anchor="nw",
 			text="QR SCANNER",
@@ -51,13 +51,19 @@ class frame_qr_code_scanner:
 		)
 
 		self.canvas.create_text(
-			25.0,
+			70.0,
     	36.0,
     	anchor="nw",
     	text="Face Detection and QR Code Recognition System",
     	fill=colors.get('white'),
     	font=("Arial", 9)
     )
+
+		logo = PhotoImage(
+			file=relative_to_assets("../logo.png")
+    )
+
+		self.canvas.create_image(40.0, 35.0, image = logo)
 
 		self.canvas.create_rectangle(
     	36.0,
