@@ -1,30 +1,48 @@
+"""
+This file is a main frame of the system.
+It holds a layout of a graphical user interface (GUI) for the main frame.
+"""
+
+# Imports
+import os
 from pathlib import Path
+from colors import colors
 from tkinter import Tk, Canvas, Button, PhotoImage
 from frame_face_detector_data import face_detector_data_frame
-from colors import colors
-import os
 from frame_qr_code_scanner_data import frame_qr_code_scanner
 
+# Initialize output path
+# This path ensures that the assets of this frame will be found 
+# if the system will be executed on the other device.
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = os.path.join(OUTPUT_PATH, './assets/frame0')
 
 def relative_to_assets(path):
     return os.path.join(ASSETS_PATH, path)
 
+# A main frame class
 class main_frame():
 	def __init__(self):
+
+		# Configure the GUI root of the system
+		# This frame contains a main loop of the system.
+		# It is the base frame of the frame stack.
+		 
 		self.root = Tk()
-		self.root.configure(bg = "#FFFFFF")
+		self.root.configure(bg = colors.get('white'))
 		self.root.resizable(False, False)
 		self.root.title("Face Detection and QR Code Scanner System")
 
+		# Ensure that the application will start on the center of the screen
 		x_cordinate = int((self.root.winfo_screenwidth()/2) - (662/2))
 		y_cordinate = int((self.root.winfo_screenheight()/2) - (408/2))
 		self.root.geometry("{}x{}+{}+{}".format(662, 408, x_cordinate, y_cordinate))
 
 
 	def show_frame(self):
-		canvas = Canvas(
+
+		# Instantiate a canvas and configure layout
+		self.canvas = Canvas(
 			self.root,
 			bg = colors.get('white'),
 			height = 408,
@@ -34,8 +52,8 @@ class main_frame():
 			relief = "ridge"
 		)
 
-		canvas.place(x = 0, y = 0)
-		canvas.create_rectangle(
+		self.canvas.place(x = 0, y = 0)
+		self.canvas.create_rectangle(
 			0.0,
 			0.0,
 			662.0,
@@ -44,7 +62,7 @@ class main_frame():
 			outline=""
 		)
 
-		canvas.create_text(
+		self.canvas.create_text(
     	70.0,
     	7.5,
 			anchor="nw",
@@ -53,7 +71,7 @@ class main_frame():
 			font=("Arial Black", 16)
 		)
 
-		canvas.create_text(
+		self.canvas.create_text(
 			70.0,
     	36.0,
     	anchor="nw",
@@ -66,7 +84,7 @@ class main_frame():
 			file=relative_to_assets("../logo.png")
     )
 
-		canvas.create_image(40.0, 35.0, image = logo)
+		self.canvas.create_image(40.0, 35.0, image = logo)
 
 		face_detector_btn_image = PhotoImage(
 			file=relative_to_assets("button_1.png")
@@ -89,7 +107,8 @@ class main_frame():
 		)
 
 		button_image_2 = PhotoImage(
-		file=relative_to_assets("button_2.png"))
+			file=relative_to_assets("button_2.png")
+		)
 
 		button_2 = Button(
 			self.root,
@@ -110,10 +129,14 @@ class main_frame():
 		self.root.mainloop()
 
 	def handle_qrcode_detector_btn_click(self):
+		# This functions opens the QR Code Scanner frame
+		
 		frame = frame_qr_code_scanner(self.root)
 		frame.show_qr_code_scanner_frame()
 
 	def handle_face_detector_btn_click(self):
+		# This functions opens the QR Code Scanner frame
+
 		frame = face_detector_data_frame(self.root)
 		frame.show_face_detector_data_frame()
 		

@@ -7,5 +7,6 @@ colors = {
   'gray': '#F7F7F7',
   'background': '#F9F9F9',
   'white': '#FFFFFF',
-  'qr_code_scan': (0, 226, 83)
+  'qr_code_scan': (0, 226, 83),
+  'face_detector_box': (0, 226, 83)
 }
