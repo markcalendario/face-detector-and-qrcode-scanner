@@ -2,11 +2,10 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Canvas, Button, PhotoImage, Toplevel
+from tkinter import Canvas, Button, PhotoImage, Toplevel, messagebox
 import cv2
 from pyzbar import pyzbar
-from available_device_getter import get_available_device_index
-
+from camera_device import get_available_camera
 
 from colors import colors
 
@@ -162,9 +161,17 @@ class frame_qr_code_scanner:
 		return frame
 
 	def start_qr_scan(self):
-		device_index = get_available_device_index()
 
-		camera = cv2.VideoCapture(device_index)
+		available_camera_index = get_available_camera()
+
+		if available_camera_index == None:
+			messagebox.showerror("Camera is not detected", "You do not have available camera. Please make sure your camera is turned on and connected.")
+			self.top.destroy()
+			self.root.deiconify()
+			return
+
+		camera = cv2.VideoCapture(available_camera_index)
+
 		is_device_capturing, frame = camera.read()
 
 		while is_device_capturing:

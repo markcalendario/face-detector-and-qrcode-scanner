@@ -1,8 +1,8 @@
 from pathlib import Path
 import os
 import cv2
-from tkinter import Canvas, Button, PhotoImage, Toplevel
-from available_device_getter import get_available_device_index
+from tkinter import Canvas, Button, PhotoImage, Toplevel, messagebox
+from camera_device import get_available_camera
 from colors import colors
 
 OUTPUT_PATH = Path(__file__).parent
@@ -94,29 +94,20 @@ class face_detector_data_frame():
 
 		self.canvas.create_text(
 			36.0,
-    	70.0,
-    	anchor="nw",
-    	text="Show your face on the camera.",
-    	fill=colors.get('black'),
-    	font=("Arial", 9)
-    )
-
-		self.canvas.create_text(
-			36.0,
-    	85.0,
-    	anchor="nw",
-    	text="Please be still while detecting your face.",
-    	fill=colors.get('white'),
-    	font=("Arial", 9)
+			76.0,
+			anchor="nw",
+			text="Please be still while detecting your face.",
+			fill=colors.get('black'),
+			font=("Arial", 9)
 		)
 
 		self.canvas.create_text(
 			36.0,
-    	100.0,
-    	anchor="nw",
-    	text="Press Esc to close camera window.",
-    	fill=colors.get('black'),
-    	font=("Arial Bold", 9)
+			96.0,
+			anchor="nw",
+			text="Press Esc to quit.",
+			fill=colors.get('black'),
+			font=("Arial Black", 9)
 		)
 
 		start_face_detection_btn_image = PhotoImage(
@@ -147,9 +138,17 @@ class face_detector_data_frame():
 		face_cascade = cv2.CascadeClassifier(os.path.join(OUTPUT_PATH, 'haarcascades', 'haarcascade_frontalface_alt2.xml'))
 
     # Initialize the video capture object
-		device_index = get_available_device_index()
-		camera = cv2.VideoCapture(device_index)
+		available_camera_index = get_available_camera()
+
+		if available_camera_index == None:
+			messagebox.showerror("Camera is not detected", "You do not have available camera. Please make sure your camera is turned on and connected.")
+			self.top.destroy()
+			self.root.deiconify()
+			return
+
+		camera = cv2.VideoCapture(available_camera_index)
 		is_camera_capturing, frame = camera.read()
+
 
 		while is_camera_capturing:
 			# Grab the frame from the video capture object
@@ -165,13 +164,12 @@ class face_detector_data_frame():
 			for (x, y, w, h) in faces:
 					cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 8), 2)
 
-			# Show the frame in another window
+
 			cv2.imshow('Video', frame)
 
 			# Terminate if user pressed Escape key
 			if cv2.waitKey(1) == 27:
 				break
-
 			if len(faces) != 0:
 				self.canvas.itemconfig(self.face_detection_indicator_image, image=self.image_check)
 			else:
