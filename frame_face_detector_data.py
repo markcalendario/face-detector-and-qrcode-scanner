@@ -146,6 +146,7 @@ class face_detector_data_frame():
     	width=589.0,
     	height=58.0
     )
+		
 		self.top.iconbitmap(relative_to_assets('../favicon.ico'))
 		self.top.resizable(False, False)
 		self.top.mainloop()
@@ -187,7 +188,7 @@ class face_detector_data_frame():
 
 			# Draw a rectangle around the faces
 			for (x, y, w, h) in faces:
-					cv2.rectangle(frame, (x, y), (x+w, y+h), colors.get('face_detector_box'), 2)
+					frame = cv2.rectangle(frame, (x, y), (x+w, y+h), colors.get('face_detector_box'), 2)
 
 			cv2.imshow('Face Detector', frame)
 
