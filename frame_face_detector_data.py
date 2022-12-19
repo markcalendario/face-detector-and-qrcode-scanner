@@ -66,7 +66,7 @@ class face_detector_data_frame():
 			70.0,
     	36.0,
     	anchor="nw",
-    	text="Face Detection and QR Code Recognition System",
+    	text="Face Detection and QR Code Scanner System",
     	fill=colors.get('white'),
     	font=("Arial", 9)
     )
@@ -146,7 +146,7 @@ class face_detector_data_frame():
     	width=589.0,
     	height=58.0
     )
-
+		self.top.iconbitmap(relative_to_assets('../favicon.ico'))
 		self.top.resizable(False, False)
 		self.top.mainloop()
 

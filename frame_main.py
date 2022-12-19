@@ -32,6 +32,8 @@ class main_frame():
 		self.root.configure(bg = colors.get('white'))
 		self.root.resizable(False, False)
 		self.root.title("Face Detection and QR Code Scanner System")
+		self.root.iconbitmap(relative_to_assets('../favicon.ico'))
+
 
 		# Ensure that the application will start on the center of the screen
 		x_cordinate = int((self.root.winfo_screenwidth()/2) - (662/2))
@@ -75,7 +77,7 @@ class main_frame():
 			70.0,
     	36.0,
     	anchor="nw",
-    	text="Face Detection and QR Code Recognition System",
+    	text="Face Detection and QR Code Scanner System",
     	fill=colors.get('white'),
     	font=("Arial", 9)
     )

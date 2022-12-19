@@ -61,7 +61,7 @@ class frame_qr_code_scanner:
 			70.0,
     	36.0,
     	anchor="nw",
-    	text="Face Detection and QR Code Recognition System",
+    	text="Face Detection and QR Code Scanner System",
     	fill=colors.get('white'),
     	font=("Arial", 9)
     )
@@ -138,6 +138,7 @@ class frame_qr_code_scanner:
 			font=("Arial Black", 9)
 		)
 
+		self.top.iconbitmap(relative_to_assets('../favicon.ico'))
 		self.top.mainloop()
 
 	def draw_text(self, frame, text, font=cv2.FONT_HERSHEY_PLAIN, pos=(0, 0), font_scale=3, font_thickness=2, text_color=(0, 255, 0), text_color_bg=(0, 0, 0)):
