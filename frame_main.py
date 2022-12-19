@@ -68,7 +68,7 @@ class main_frame():
     	70.0,
     	7.5,
 			anchor="nw",
-			text="GROUP 4",
+			text="DECODE",
 			fill=colors.get('white'),
 			font=("Arial Black", 16)
 		)
